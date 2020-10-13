@@ -1,15 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require('../db');
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     firstname: String,
     lastname: String,
     username: String,
     email: String,
     description: String,
     avatar: String,
-    tweets: [],
-    following: [],
-    followers: [],
+    //tweets: [{ types: Schema.Types.ObjectId, ref: 'Tweet'}],
+    //following: [{ types: Schema.Types.ObjectId, ref: 'User'}],
+    //followers: [{ types: Schema.Types.ObjectId, ref: 'User'}],
 })
 
-module.exports = mongoose.model('User', userSchema);
+
+
+module.exports = mongoose.model('User', userSchema)
