@@ -1,0 +1,19 @@
+{
+  "name": "twitter_clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuillermoBarboza/twitter_clone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuillermoBarboza/twitter_clone/issues"
+  },
+  "homepage": "https://github.com/GuillermoBarboza/twitter_clone#readme"
+}
