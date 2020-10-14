@@ -6,10 +6,15 @@
       <div class="row">
         <div class="col-md-12">
           <img src="" alt="Twita logo" />
-          <h1>Sign up on Twita</h1>
+          <h1 class="text-center">Sign Up on Twita</h1>
         </div>
         <div class="col-md-12">
-          <form class="form-group" action="/registro" method="POST">
+          <form
+            id="form-signUp"
+            class="form-group"
+            action="/registro"
+            method="POST"
+          >
             <label for="firstname" class="">Nombre</label>
             <input
               name="firstname"
@@ -44,8 +49,11 @@
               id="password"
               type="password"
             />
-
-            <button type="submit">Registrate</button>
+            <div class="d-flex justify-content-center mt-2">
+              <button class="btn btn-signUp btn-lg" type="submit">
+                Regístrate
+              </button>
+            </div>
           </form>
         </div>
       </div>
