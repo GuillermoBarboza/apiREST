@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Twit = require('../models/Twit')
 const faker = require('faker')
 const passport = require("passport")
+const bcrypt = require('bcryptjs')
 
 
 
@@ -36,11 +37,12 @@ module.exports = {
       }),
 
     signUp:  (req, res) => {
+      const password = bcrypt.hashSync(req.body.password, 10);
       const user = new User({        
           firstname: req.body.firstname,
           lastname: req.body.lastname,
           username: req.body.username,
-          password: req.body.password,
+          password: password,
           email: req.body.email,
         },
         
@@ -73,4 +75,6 @@ module.exports = {
       req.logout();
       res.redirect("/login");
     },
+
+  
   }
