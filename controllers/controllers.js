@@ -3,8 +3,8 @@ const faker = require('faker')
 
 
 module.exports = {
-    controllers: async (req, res) => {
-        for (let i = 0; i < 20; i++) {
+    controllers: (req, res) => {
+        /* for (let i = 0; i < 20; i++) {
             let user = new User({
               firstname: faker.name.firstName(),
               lastname: faker.name.lastName(),
@@ -18,10 +18,10 @@ module.exports = {
             });
             console.log('user creado')
             
-            await user.save();
+            user.save();
             console.log(user);
             
-          }
+          } */
         console.log('back end log')
         res.send('ok en tu front')
     }
