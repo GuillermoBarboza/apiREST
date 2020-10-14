@@ -11,6 +11,7 @@ router.get("/articulo/:id/js/app.js", (req, res) => {
 });
 
 router.get('/', (req, res) => {
+<<<<<<< HEAD
     res.redirect("/home")
 })
 
@@ -20,6 +21,9 @@ router.get('/home', (req, res) => {
       } else {
         return res.redirect("/login");
       }
+=======
+    res.render("home")
+>>>>>>> 28da2100340c089fb19a153d7cb51f89895a71c9
 })
 
 // Login routes
