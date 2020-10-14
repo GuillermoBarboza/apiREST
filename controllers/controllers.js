@@ -65,9 +65,10 @@ module.exports = {
         console.log(req.params)
         let username = req.params.username
         User.findOne({username})
+        .populate('author')
         .then(user => {
             console.log(user);
-            res.render('user-profile')
+            res.render('user-profile', {user})
         })
     },
 
