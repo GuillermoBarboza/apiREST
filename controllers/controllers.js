@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const faker = require('faker')
-
+const passport = require("passport")
 
 module.exports = {
     controllers: (req, res) => {
@@ -24,5 +24,10 @@ module.exports = {
           } */
         console.log('back end log')
         res.send('ok en tu front')
-    }
+    },
+    
+    signIn: passport.authenticate("local", {
+        successRedirect: "/home",
+        failureRedirect: "/login",
+      }),
 }

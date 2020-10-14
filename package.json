@@ -25,6 +25,7 @@
     "faker": "^5.1.0",
     "formidable": "^1.2.2",
     "mongoose": "^5.10.9",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   }
 }

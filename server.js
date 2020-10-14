@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const passport = require('passport');
 const routes = require('./routes')
-
+const passport = require("passport");
+const initializePassport = require("./passport-config");
 const app = express();
 
 
@@ -11,6 +11,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+initializePassport.localStrategy(passport);
 
 app.set('view engine', 'ejs');
 
@@ -21,6 +22,10 @@ app.use(
         saveUninitialized: true,// resave y save uninitialized
     }) 
 )
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use(routes)
 
 
