@@ -8,9 +8,9 @@ const userSchema = new Schema({
     email: String,
     description: String,
     avatar: String,
-    tweets: [{ types: Schema.Types.ObjectId, ref: 'Tweet'}],
-    following: [{ types: Schema.Types.ObjectId, ref: 'User'}],
-    followers: [{ types: Schema.Types.ObjectId, ref: 'User'}],
+    tweets: [{ type: Schema.Types.ObjectId, ref: 'Tweet'}],
+    following: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User'}],
 })
 
 
