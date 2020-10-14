@@ -1,5 +1,37 @@
+/* HOME NOT LOGGED */
+.titleHome {
+  text-align: center;
+  margin-top: 7rem;
+  margin-bottom: 2rem;
+}
+
+.btn-signUp {
+  background-color: #1da1f2;
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.btn-signUp:hover {
+  color: white;
+  opacity: 80%;
+}
+
+.btn-logIn {
+  color: #1da1f2;
+  border-color: #1da1f2;
+  margin-left: 0.5rem;
+}
+
+.btn-logIn:hover {
+  color: #1da1f2;
+  background-color: white;
+  opacity: 80%;
+}
+
+/* TWITS */
+
 .twit-container {
-    padding: 15px;
-    background-color: antiquewhite;
-    border-radius: 15px;
+  padding: 15px;
+  background-color: antiquewhite;
+  border-radius: 15px;
 }

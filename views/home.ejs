@@ -4,19 +4,17 @@
   <body>
     <div class="container">
       <% if(user) { %>
-      <h1>Bienvenido a Twita</h1>
+      <h1 class="titleUserHome">Bienvenido a Twita</h1>
 
       <div class="row">
         <div class="col-12">
           <h3>Twiteale algo al mundo</h3>
           <form class="form-group" action="/twitealo" method="POST">
-            <input type="hidden" name="author" value="<%- user._id %>" />
+            <input type="hidden" name="author" value=<%- user._id %> />
             <input
               type="hidden"
               name="dateOfCreation"
-              value="<%
-              Date.now()
-              %>"
+              value=<%-Date.now()%>  
             />
             <textarea name="body" rows="4"> </textarea>
             <button type="submit">Twit!</button>
@@ -26,15 +24,13 @@
 
       <a href="http://localhost:3000/logout">Log Out</a>
       <% } else { %>
-      <h3 class="text-center">Ingresar a Twita</h3>
-      <div class="row">
-        <div class="col-md-6">
-          <a class="btn btn-info btn-lg" href="http://localhost:3000/registro"
+      <h2 class="titleHome">Ingresar a Twita</h3>
+      <h6 class="text-center">Únete al twita ya mismo</h5>
+      <div class="d-flex justify-content-center">       
+          <a class="btn btn-signUp btn-lg" href="http://localhost:3000/registro"
             >Registrate aquí</a
           >
-        </div>
-        <div class="col-md-6">
-          <a class="btn btn-link btn-lg" href="http://localhost:3000/login"
+        <a class="btn btn-logIn btn-lg" href="http://localhost:3000/login"
             >Iniciar sesión</a
           >
         </div>
