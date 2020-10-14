@@ -11,7 +11,7 @@ router.get("/articulo/:id/js/app.js", (req, res) => {
 });
 
 router.get('/', (req, res) => {
-
+    res.render("home")
 })
 
 module.exports = router;
