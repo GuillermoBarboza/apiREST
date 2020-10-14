@@ -11,8 +11,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 app.use(
     session({
@@ -26,6 +25,8 @@ app.use(routes)
 
 
 
+app.use(routes);
+
 app.listen(3000, () => {
-    console.log("listening on 3000");
-  });
+  console.log("listening on 3000");
+});
