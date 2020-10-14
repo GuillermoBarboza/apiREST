@@ -29,6 +29,7 @@ router.get('/login', (req, res) =>{
     res.render('login')
 })
 router.post('/login', controllers.signIn)
+router.get("/logout", controllers.logout);
 
 // sign up routes
 router.get('/registro', (req, res) =>{

@@ -57,5 +57,9 @@ module.exports = {
         twit.save()
         res.redirect("/home")
         
-    }
+    },
+    logout: function (req, res) {
+      req.logout();
+      res.redirect("/login");
+    },
   }
