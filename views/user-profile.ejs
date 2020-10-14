@@ -25,35 +25,39 @@
       <div class="row">
         <div class="col-sm-2">
           <div>
-            <img src="" alt="foto de perfil" />
-            <p>nombre de usuario</p>
+            <img src=<%- user.avatar %> alt="foto de perfil" />
+            <p><%- user.username %></p>
             <a href="http://localhost:3000/logout">Log Out</a>
           </div>
         </div>
         <div class="col-sm-8">
-          <h1>Twits de Username</h1>
-
+          <h1>Twits de <%- user.username %></h1>
+         
           <!-- cada twit  -->
-          <div class="twit-container">
-            <div class="row">
+          <div class="twit-container ">
+            <% user.twits.forEach(twit => { %>
+            <div class="row my-3">
               <!-- Usuario -->
-              <div class="col-12 d-flex">
-                <img class="img-twit" src="" alt="" />
-                <p>nombre y apellido</p>
-                <p>username</p>
+              <div class="col-12 d-flex justify-content-between">
+                <img class="img-twit" src=<%- user.avatar %> alt="" />
+                <p><%- user.firstname %> <%- user.lastname %> </p>
+                <p><%- user.username %></p>
                 <button>Follow</button>
               </div>
               <!-- Twit -->
               <div class="col-12">
                 <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Obcaecati et mollitia molestiae quae amet nulla autem alias
-                  itaque exercitationem porro praesentium, odio iure voluptate
-                  dolor quis, culpa enim fuga aut!
+                    <%- twit.body %>
                 </p>
-                <button>Like!</button>
+                <div>
+                    <p> <%- twit.dateOfCreation %></p>
+                    <p> <%- twit.likes %></p>
+                    <button>Like!</button>
+                </div>
+                
               </div>
             </div>
+            <% }) %>
           </div>
         </div>
       </div>

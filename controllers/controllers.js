@@ -7,26 +7,36 @@ const bcrypt = require('bcryptjs')
 
 
 module.exports = {
-    controllers: (req, res) => {
-        /* for (let i = 0; i < 20; i++) {
+    fillDb: (req, res) => {
+        for (let i = 0; i < 20; i++) {
             let user = new User({
               firstname: faker.name.firstName(),
               lastname: faker.name.lastName(),
               username: faker.internet.userName(),
-              password: faker.lorem.word()
+              password: bcrypt.hashSync(faker.lorem.word(), 10),
               email: faker.internet.email(),
               description: faker.lorem.sentence(),
               avatar: faker.image.avatar(),
-              tweets: [],
-              following: [],
-              followers: [],
             });
-            console.log('user creado')
             
             user.save();
-            console.log(user);
+            for (let i = 0; i < 20; i++) {
+                let twit = new Twit({
+                    author: user._id,
+                    body: faker.lorem.paragraph(),
+                    dateOfCreation: Date.now(),
+                    likes: 0,
+                });
+
+                twit.save(function(err, twit) {
+                    User.findById(user._id, function(err, user) {
+                      user.twits.push(twit);
+                      user.save();
+                    });
+                  });
+            }
             
-          } */
+          }
         console.log('back end log')
         res.send('ok en tu front')
     },
@@ -79,6 +89,7 @@ module.exports = {
         //console.log(req.params)
         let username = req.params.username
         User.findOne({username})
+        .populate('twits')
         .then(user => {
             
             console.log(user);
