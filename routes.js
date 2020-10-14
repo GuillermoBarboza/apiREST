@@ -25,7 +25,7 @@ router.get('/home', (req, res) => {
     res.render('home', {user})
 })
 // USER PROFILE
-router.get('/:username', controllers.getUserProfile)
+router.get('/profile/:username', controllers.getUserProfile)
 
 // Twitealo ruta
 router.post('/twitealo', controllers.createTwit)
