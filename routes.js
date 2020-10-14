@@ -28,6 +28,7 @@ router.post('/login', controllers.signIn)
 router.get('/registro', (req, res) =>{
     res.render('register')
 })
+router.post("/registro", controllers.signUp)
 
 
 module.exports = router;

@@ -2,6 +2,8 @@ const User = require('../models/User')
 const faker = require('faker')
 const passport = require("passport")
 
+
+
 module.exports = {
     controllers: (req, res) => {
         /* for (let i = 0; i < 20; i++) {
@@ -9,6 +11,7 @@ module.exports = {
               firstname: faker.name.firstName(),
               lastname: faker.name.lastName(),
               username: faker.internet.userName(),
+              password: faker.lorem.word()
               email: faker.internet.email(),
               description: faker.lorem.sentence(),
               avatar: faker.image.avatar(),
@@ -30,4 +33,20 @@ module.exports = {
         successRedirect: "/home",
         failureRedirect: "/login",
       }),
-}
+
+    signUp:  (req, res) => {
+      const user = new User({        
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+        },
+        
+      );
+      user.save()
+      console.log(req.body)
+      res.redirect("/home")
+      
+    },
+  }
