@@ -9,6 +9,7 @@
   background-color: #1da1f2;
   color: white;
   margin-right: 0.5rem;
+  border-radius: 70px;
 }
 
 .btn-signUp:hover {
@@ -20,12 +21,29 @@
   color: #1da1f2;
   border-color: #1da1f2;
   margin-left: 0.5rem;
+  border-radius: 60px;
 }
 
 .btn-logIn:hover {
   color: #1da1f2;
   background-color: white;
   opacity: 80%;
+}
+
+/* URL LOGIN */
+#form-logIn {
+  margin-top: 0.5rem;
+  margin-left: 18rem;
+  margin-right: 18rem;
+  padding: 1rem;
+}
+
+/* URL SIGNUP */
+#form-signUp {
+  margin-top: 0.5rem;
+  margin-left: 15rem;
+  margin-right: 15rem;
+  padding: 1rem;
 }
 
 /* TWITS */
