@@ -58,7 +58,19 @@ module.exports = {
         const twit = new Twit(
             req.body,
         );
-        twit.save()
+        twit.save(function(err, twit) {
+            if (err) return res.send(err);
+            console.log("author id", req.body.author);
+            console.log('twit', twit);
+            
+            User.findById(req.body.author, function(err, user) {
+              if (err) return res.send(err);
+              console.log("user",user);
+              
+              user.twits.push(twit);
+              user.save();
+            });
+          });
         res.redirect("/home")
         
     },
