@@ -22,7 +22,7 @@ module.exports = {
         { usernameField: "username", passwordField: "password", session: true },
         function (username, password, done) {
           
-          console.log(username, password);
+          
           done(null, username)
 
           

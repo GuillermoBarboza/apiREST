@@ -15,7 +15,12 @@ router.get('/', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    res.render('home')
+    console.log(req.session)
+    let user = false
+    if(req.session.passport != undefined) {
+        user = req.session.passport.user
+    }
+    res.render('home', {user})
 })
 
 // Login routes

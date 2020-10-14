@@ -45,7 +45,6 @@ module.exports = {
         
       );
       user.save()
-      console.log(req.body)
       res.redirect("/home")
       
     },
