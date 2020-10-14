@@ -1,4 +1,5 @@
-const User = require('../models/User')
+const User = require('../models/User');
+const Twit = require('../models/Twit')
 const faker = require('faker')
 const passport = require("passport")
 
@@ -48,4 +49,13 @@ module.exports = {
       res.redirect("/home")
       
     },
+
+    createTwit: (req, res) =>{
+        const twit = new Twit(
+            req.body,
+        );
+        twit.save()
+        res.redirect("/home")
+        
+    }
   }

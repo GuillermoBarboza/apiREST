@@ -15,14 +15,15 @@ router.get('/', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    console.log(req.session)
+   
     let user = false
     if(req.session.passport != undefined) {
         user = req.session.passport.user
     }
     res.render('home', {user})
 })
-
+// Twitealo ruta
+router.post('/twitealo', controllers.createTwit)
 // Login routes
 router.get('/login', (req, res) =>{
     res.render('login')
