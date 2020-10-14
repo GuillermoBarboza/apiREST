@@ -53,6 +53,8 @@ module.exports = {
     },
 
     createTwit: (req, res) =>{
+        console.log(req.body);
+        
         const twit = new Twit(
             req.body,
         );
@@ -62,11 +64,11 @@ module.exports = {
     },
 
     getUserProfile: (req, res) => {
-        console.log(req.params)
+        //console.log(req.params)
         let username = req.params.username
         User.findOne({username})
-        .populate('author')
         .then(user => {
+            
             console.log(user);
             res.render('user-profile', {user})
         })
