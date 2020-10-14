@@ -92,9 +92,32 @@ module.exports = {
         .populate('twits')
         .then(user => {
             
-            console.log(user);
+            //console.log(user);
             res.render('user-profile', {user})
         })
+    },
+
+    addToFollowing: (req, res) => {
+        console.log(req.session);
+        let newFollowing = req.body.author;
+        
+        User.findById(req.session.passport.user._id, function(err, user) {
+            if (err) return res.send(err);
+            console.log("user",user);
+            
+            user.following.push(newFollowing);
+            user.save();
+          });
+        User.findById(newFollowing, function(err, user) {
+            if (err) return res.send(err);
+            console.log("user",user);
+            
+            user.followers.push(req.session.passport.user._id);
+            user.save();
+          });
+        
+
+        res.redirect('back')
     },
 
     logout: function (req, res) {
@@ -102,5 +125,12 @@ module.exports = {
       res.redirect("/login");
     },
 
+    isLoggedIn: (req, res, next) => {
+        if (req.isAuthenticated()) {
+          return next();
+        } else {
+          return res.redirect("/login");
+        }
+      } 
   
   }

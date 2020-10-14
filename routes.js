@@ -32,6 +32,9 @@ router.get('/profile/:username', controllers.getUserProfile)
 // Twitealo ruta
 router.post('/twitealo', controllers.createTwit)
 
+// Follow someone 
+router.post('/follow', controllers.isLoggedIn, controllers.addToFollowing)
+
 // Login routes
 router.get('/login', (req, res) =>{
     res.render('login')

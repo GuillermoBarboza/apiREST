@@ -42,7 +42,12 @@
                 <img class="img-twit" src=<%- user.avatar %> alt="" />
                 <p><%- user.firstname %> <%- user.lastname %> </p>
                 <p><%- user.username %></p>
-                <button>Follow</button>
+                <form action="/follow" method="POST">
+                    
+                    <input type="hidden" name="author" value=<%- user._id %> />
+                    <button type="submit">Follow</button>
+                </form>
+                
               </div>
               <!-- Twit -->
               <div class="col-12">
