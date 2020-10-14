@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head") %>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <img src="" alt="Twita logo" />
+          <h1>Sign up on Twita</h1>
+        </div>
+        <div class="col-md-12">
+          <form class="form-group" action="/registro" method="POST">
+            <label for="firstname" class="">Nombre</label>
+            <input
+              name="firstname"
+              class="form-control"
+              id="firstname"
+              type="text"
+            />
+
+            <label for="lastname" class="">Apellido</label>
+            <input
+              name="lastname"
+              class="form-control"
+              id="lastname"
+              type="text"
+            />
+
+            <label for="username" class="">Username</label>
+            <input
+              name="username"
+              class="form-control"
+              id="username"
+              type="text"
+            />
+
+            <label for="email" class="">Email</label>
+            <input name="email" class="form-control" id="email" type="email" />
+
+            <label for="password" class="">Password</label>
+            <input
+              name="password"
+              class="form-control"
+              id="password"
+              type="text"
+            />
+
+            <button type="submit">Registrate</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
