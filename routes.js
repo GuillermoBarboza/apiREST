@@ -15,11 +15,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-    if (req.isAuthenticated()) {
-        return res.render("home");
-      } else {
-        return res.redirect("/login");
-      }
+    res.render('home')
 })
 
 // Login routes
