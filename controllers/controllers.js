@@ -58,6 +58,17 @@ module.exports = {
         res.redirect("/home")
         
     },
+
+    getUserProfile: (req, res) => {
+        console.log(req.params)
+        let username = req.params.username
+        User.findOne({username})
+        .then(user => {
+            console.log(user);
+            res.render('user-profile')
+        })
+    },
+
     logout: function (req, res) {
       req.logout();
       res.redirect("/login");
