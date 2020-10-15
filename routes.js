@@ -12,8 +12,8 @@ router.get("js/app.js", (req, res) => {
     res.sendFile(__dirname + "/public/js/app.js");
 });
 
-/*  router.get('/', controllers.fillDb) 
- */
+ /* router.get('/', controllers.fillDb)  */
+
  router.get('/', (req, res) => {
     res.redirect('/home')
 }) 

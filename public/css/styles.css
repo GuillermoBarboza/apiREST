@@ -17,14 +17,14 @@
   opacity: 80%;
 }
 
-.btn-logIn {
+.btn-logIn-home {
   color: #1da1f2;
   border-color: #1da1f2;
   margin-left: 0.5rem;
   border-radius: 60px;
 }
 
-.btn-logIn:hover {
+.btn-logIn-home:hover {
   color: #1da1f2;
   background-color: white;
   opacity: 80%;
@@ -36,6 +36,24 @@
   margin-left: 18rem;
   margin-right: 18rem;
   padding: 1rem;
+}
+
+.btn-logIn {
+  background-color: #1da1f2;
+  color: white;
+  border-radius: 60px;
+}
+
+.btn-logIn:hover {
+  background-color: #1a91da;
+  color: white;
+}
+.link-logIn {
+  color: #1da1f2;
+}
+
+.link-logIn:hover {
+  color: #1da1f2;
 }
 
 /* URL SIGNUP */

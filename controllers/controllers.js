@@ -80,6 +80,7 @@ module.exports = {
           username: req.body.username,
           password: password,
           email: req.body.email,
+          avatar: "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
         },
         
       );
