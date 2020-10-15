@@ -31,16 +31,22 @@
             <img class="img-thumbnail avatar-twit" src=<%- twit.author.avatar %> alt="" />
             <p><%- twit.author.firstname %> <%- twit.author.lastname %> </p>
             <p><%- twit.author.username %></p>
-            <form action="/follow" method="POST">
+            
+            <% if(user.following.indexOf(twit.author._id) != -1) { %>
+              <form action="/follow" method="POST">
+                
+                <input type="hidden" name="author" value=<%- twit.author._id %> />
+                <button type="submit">Unfollow</button>
+            </form>
+            <% } else { %>
+              <form action="/follow" method="POST">
                 
                 <input type="hidden" name="author" value=<%- twit.author._id %> />
                 <button type="submit">Follow</button>
-                <a
-                href="/eliminar/<%= twit._id %>"
-                class="btn btn-danger"
-                >Eliminar twit</a
-              >
-            </form>
+              </form>
+            <% } %>
+
+            
             
           </div>
           <!-- Twit -->
