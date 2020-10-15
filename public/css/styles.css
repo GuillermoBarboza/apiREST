@@ -71,3 +71,14 @@
   background-color: antiquewhite;
   border-radius: 15px;
 }
+.avatar-profile {
+    
+    border: 2px solid rgb(177, 103, 103);
+    object-fit: cover;
+    position: relative;
+    
+}
+.avatar-twit {
+    width: 150px;
+    object-fit: cover;
+}

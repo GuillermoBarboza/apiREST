@@ -24,11 +24,11 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-2">
-          <div>
-            <img src=<%- user.avatar %> alt="foto de perfil" />
+          
+            <img src=<%- user.avatar %> class="img-thumbnail avatar-profile" alt="foto de perfil" />
             <p><%- user.username %></p>
             <a href="http://localhost:3000/logout">Log Out</a>
-          </div>
+          
         </div>
         <div class="col-sm-8">
           <h1>Twits de <%- user.username %></h1>
@@ -39,7 +39,7 @@
             <div class="row my-3">
               <!-- Usuario -->
               <div class="col-12 d-flex justify-content-between">
-                <img class="img-twit" src=<%- user.avatar %> alt="" />
+                <img class="img-thumbnail avatar-twit" src=<%- user.avatar %> alt="" />
                 <p><%- user.firstname %> <%- user.lastname %> </p>
                 <p><%- user.username %></p>
                 <form action="/follow" method="POST">

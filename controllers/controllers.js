@@ -52,18 +52,20 @@ module.exports = {
         
         let user = false
         if(req.isAuthenticated()) {
-            let following = req.session.passport.user.following;
-            user = req.session.passport.user
-            Twit.find({author: {$in: following} })
-            .limit(20)
-            .sort('-dateOfCreation')
-            .populate('author')
-            .then(feedResults => {
-                res.render('home', {user, feedResults})
-            })
+            User.findById(req.session.passport.user._id)
+            .then(loggedUser => {
+                Twit.find({author: {$in: loggedUser.following} })
+                .limit(20)
+                .sort('-dateOfCreation')
+                .populate('author')
+                .then(feedResults => {
+                    res.render('home', {user: loggedUser, feedResults})
+                })
+            }) 
         } else {
             res.render('home', {user})
         }
+            
         
     },
     
@@ -133,6 +135,7 @@ module.exports = {
             
             
             user.following.push(newFollowing);
+            user.markModified('user.following')
             user.save();
           });
         User.findById(newFollowing, function(err, user) {
@@ -140,11 +143,12 @@ module.exports = {
             
             
             user.followers.push(req.session.passport.user._id);
+            user.markModified('user.followers')
             user.save();
           });
         
 
-        res.redirect('back')
+        res.redirect('/')
     },
 
     logout: function (req, res) {
