@@ -12,20 +12,13 @@ router.get("js/app.js", (req, res) => {
     res.sendFile(__dirname + "/public/js/app.js");
 });
 
- /* router.get('/', controllers.fillDb)  */
-
+/*  router.get('/', controllers.fillDb) 
+ */
  router.get('/', (req, res) => {
     res.redirect('/home')
 }) 
 
-router.get('/home', (req, res) => {
-   
-    let user = false
-    if(req.session.passport != undefined) {
-        user = req.session.passport.user
-    }
-    res.render('home', {user})
-})
+router.get('/home', controllers.homeFeed)
 // USER PROFILE
 router.get('/profile/:username', controllers.getUserProfile)
 

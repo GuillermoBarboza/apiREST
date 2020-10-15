@@ -4,6 +4,12 @@ const faker = require('faker')
 const passport = require("passport")
 const bcrypt = require('bcryptjs')
 
+function randomDate(start, end, startHour, endHour) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    return date;
+  }
 
 
 module.exports = {
@@ -24,7 +30,7 @@ module.exports = {
                 let twit = new Twit({
                     author: user._id,
                     body: faker.lorem.paragraph(),
-                    dateOfCreation: Date.now(),
+                    dateOfCreation: randomDate(new Date(2020, 0, 1), new Date(), 0, 24),
                     likes: 0,
                 });
 
@@ -39,6 +45,26 @@ module.exports = {
           }
         console.log('back end log')
         res.send('ok en tu front')
+    },
+
+    homeFeed: (req, res) => {
+        console.log(req.session);
+        
+        let user = false
+        if(req.isAuthenticated()) {
+            let following = req.session.passport.user.following;
+            user = req.session.passport.user
+            Twit.find({author: {$in: following} })
+            .limit(20)
+            .sort('-dateOfCreation')
+            .populate('author')
+            .then(feedResults => {
+                res.render('home', {user, feedResults})
+            })
+        } else {
+            res.render('home', {user})
+        }
+        
     },
     
     signIn: passport.authenticate("local", {
@@ -70,12 +96,12 @@ module.exports = {
         );
         twit.save(function(err, twit) {
             if (err) return res.send(err);
-            console.log("author id", req.body.author);
-            console.log('twit', twit);
+            //console.log("author id", req.body.author);
+            //console.log('twit', twit);
             
             User.findById(req.body.author, function(err, user) {
               if (err) return res.send(err);
-              console.log("user",user);
+              //console.log("user",user);
               
               user.twits.push(twit);
               user.save();
@@ -98,19 +124,19 @@ module.exports = {
     },
 
     addToFollowing: (req, res) => {
-        console.log(req.session);
+        //console.log(req.session);
         let newFollowing = req.body.author;
         
         User.findById(req.session.passport.user._id, function(err, user) {
             if (err) return res.send(err);
-            console.log("user",user);
+            
             
             user.following.push(newFollowing);
             user.save();
           });
         User.findById(newFollowing, function(err, user) {
             if (err) return res.send(err);
-            console.log("user",user);
+            
             
             user.followers.push(req.session.passport.user._id);
             user.save();

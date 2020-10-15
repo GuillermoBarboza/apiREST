@@ -22,7 +22,37 @@
         </div>
       </div>
 
-    
+       <!-- cada twit  -->
+       <div class="twit-container ">
+        <% feedResults.forEach(twit => { %>
+        <div class="row my-3">
+          <!-- Usuario -->
+          <div class="col-12 d-flex justify-content-between">
+            <img class="img-twit" src=<%- twit.author.avatar %> alt="" />
+            <p><%- twit.author.firstname %> <%- twit.author.lastname %> </p>
+            <p><%- twit.author.username %></p>
+            <form action="/follow" method="POST">
+                
+                <input type="hidden" name="author" value=<%- twit.author._id %> />
+                <button type="submit">Follow</button>
+            </form>
+            
+          </div>
+          <!-- Twit -->
+          <div class="col-12">
+            <p>
+                <%- twit.body %>
+            </p>
+            <div>
+                <p> <%- twit.dateOfCreation %></p>
+                <p> <%- twit.likes %></p>
+                <button>Like!</button>
+            </div>
+            
+          </div>
+        </div>
+        <% }) %>
+        </div>
 
       <a href="http://localhost:3000/logout">Log Out</a>
       <% } else { %>
