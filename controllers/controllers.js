@@ -132,21 +132,36 @@ module.exports = {
         
         User.findById(req.session.passport.user._id, function(err, user) {
             if (err) return res.send(err);
-            
-            
-            user.following.push(newFollowing);
-            user.markModified('user.following')
-            user.save();
-          });
+
+            if (user.following.indexOf(newFollowing) != -1) {
+                user.following.splice(user.following.indexOf(req.session.passport.user._id), 1)
+                user.markModified('user.following')
+                user.save();
+                
+                
+            } else {
+                user.following.push(newFollowing);
+                user.markModified('user.following')
+                user.save();
+                
+            }
+        });
         User.findById(newFollowing, function(err, user) {
             if (err) return res.send(err);
-            
-            
-            user.followers.push(req.session.passport.user._id);
-            user.markModified('user.followers')
-            user.save();
-          });
-        
+
+            if (user.followers.indexOf(req.session.passport.user._id) != -1) {
+                user.followers.splice(user.followers.indexOf(newFollowing), 1)
+                user.markModified('user.followers')
+                user.save();
+                
+                
+            } else {
+                user.followers.push(req.session.passport.user._id);
+                user.markModified('user.followers')
+                user.save();
+                
+            }
+        });
 
         res.redirect('/')
     },
