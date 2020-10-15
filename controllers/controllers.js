@@ -162,6 +162,19 @@ module.exports = {
         } else {
           return res.redirect("/login");
         }
-      } 
-  
+      }, 
+
+      deleteTwit: (req, res) => {
+         const twToDelete = req.params._id
+        Twit.deleteOne({
+          twToDelete //VER $pull para quitar del array
+        })
+        .then(() => {
+          console.log("Twit eliminado");
+        });
+        res.redirect("/")  
+        }  
   }
+
+
+           

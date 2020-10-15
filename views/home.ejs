@@ -35,6 +35,11 @@
                 
                 <input type="hidden" name="author" value=<%- twit.author._id %> />
                 <button type="submit">Follow</button>
+                <a
+                href="/eliminar/<%= twit._id %>"
+                class="btn btn-danger"
+                >Eliminar twit</a
+              >
             </form>
             
           </div>
