@@ -215,7 +215,7 @@ module.exports = {
         .then(() => {
           console.log("Twit eliminado");
         });
-        res.redirect("/")  
+        res.redirect("back")  
         }  
   }
 
