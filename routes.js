@@ -28,7 +28,7 @@ router.post('/twitealo', controllers.isLoggedIn, controllers.createTwit)
 // Follow someone 
 router.post('/follow', controllers.isLoggedIn, controllers.followUnfollow)
 // LIKES
-router.post('/like', controllers.like)
+router.post('/like',controllers.isLoggedIn, controllers.like)
 // Login routes
 router.get('/login', (req, res) =>{
     res.render('login')

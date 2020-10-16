@@ -2,7 +2,8 @@ const User = require('../models/User');
 const Twit = require('../models/Twit')
 const faker = require('faker')
 const passport = require("passport")
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const { use } = require('passport');
 
 function randomDate(start, end, startHour, endHour) {
     var date = new Date(+start + Math.random() * (end - start));
@@ -120,17 +121,26 @@ module.exports = {
         let username = req.params.username
         let userSession = {
           _id: "voidUsername",
+          following: [],
+          likes: [],
         };
         if (req.isAuthenticated()) {
           userSession = req.session.passport.user;
         }
-        User.findOne({username})
-        .populate('twits')
-        .then(userProfile => {
-            
-            //console.log(user);
-            res.render('user-profile', {userProfile, userSession})
+        User.findById(userSession._id)
+        .then(result => {
+          if (result != null) {
+            userSession = result;
+          }
+          
+          
+          User.findOne({username})
+          .populate('twits')
+          .then(userProfile => {
+          res.render('user-profile', {userProfile, userSession})
         })
+        })
+        
     },
 
     like: (req, res) => {

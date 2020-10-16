@@ -47,18 +47,40 @@
                 <p>mi twit</p>
               <% } %>
 
-              <form action="/follow" method="POST">
-                <input type="hidden" name="author" value="<%-userProfile._id %>" />
-                <button type="submit">Follow</button>
+              <% if(userSession.following.indexOf(twit.author._id) != -1) { %>
+                <form action="/follow" method="POST">
+                  
+                  <input type="hidden" name="author" value=<%- twit.author._id %> />
+                  <button type="submit">Unfollow</button>
               </form>
+              <% } else { %>
+                <form action="/follow" method="POST">
+                  
+                  <input type="hidden" name="author" value=<%- twit.author._id %> />
+                  <button type="submit">Follow</button>
+                </form>
+              <% } %>
             </div>
             <!-- Twit -->
             <div class="col-12">
               <p><%- twit.body %></p>
               <div>
                 <p><%- twit.dateOfCreation %></p>
-                <p><%- twit.likes %></p>
-                <button>Like!</button>
+                <p><%- twit.likes.length %></p>
+                <% if (twit.likes.indexOf(userSession._id) != -1) { %>
+                  <form action="/like" method="POST">
+                    
+                    <input type="hidden" name="author" value=<%- twit._id %> />
+                    <button type="submit">Dislike</button>
+                    
+                  </form>
+                <% } else { %>
+                  <form action="/like" method="POST">
+                
+                    <input type="hidden" name="author" value=<%-twit._id %> />
+                    <button type="submit">Like!</button>
+                  </form>
+                <% } %>
               </div>
             </div>
           </div>
