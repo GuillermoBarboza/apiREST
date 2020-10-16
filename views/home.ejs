@@ -3,46 +3,61 @@
 <%- include("partials/head") %>
 
 <body>
+  <%- include("partials/navbar") %>
+
   <div class="container">
-    <% if(user) { %>
+    <% if(userSession._id != "voidUsername") { %>
     <h1 class="titleUserHome">Bienvenido a Twita</h1>
 
     <div class="row">
       <div class="col-12">
         <h3>Twiteale algo al mundo</h3>
         <form class="form-group" action="/twitealo" method="POST">
-          <input type="hidden" name="author" value=<%- user._id %> />
+          <input type="hidden" name="author" value=<%- userSession._id %> />
           <input type="hidden" name="dateOfCreation" value=<%-Date.now()%> />
-          <textarea class="form-control" name="body" rows="4"> </textarea>
+          <textarea name="body" rows="4"> </textarea>
           <div><button type="submit">Twit!</button></div>
         </form>
+        <% } else { %>
+        <form action="/follow" method="POST">
+
+          <input type="hidden" name="author" value=<%- twit.author._id %> />
+          <button type="submit">Follow</button>
+        </form>
+        <% } %>
+
+
+
       </div>
-    </div>
+      <!-- Twit -->
+      <div class="col-12">
+        <p>
+          <%- twit.body %>
+        </p>
+        <div>
+          <p> <%- twit.dateOfCreation %></p>
+          <p> <%- twit.likes.length %></p>
+          <% if (twit.likes.indexOf(user._id) != -1) { %>
+          <form action="/like" method="POST">
 
-    <!-- cada twit  -->
-    <div class="twit-container ">
-      <% feedResults.forEach(twit => { %>
-      <div class="row my-3">
-        <!-- Usuario -->
-        <div class="col-12 d-flex justify-content-between">
-          <img class="img-thumbnail avatar-twit" src=<%- twit.author.avatar %> alt="" />
-          <p><%- twit.author.firstname %> <%- twit.author.lastname %> </p>
-          <p><%- twit.author.username %></p>
+            <input type="hidden" name="author" value=<%- twit._id %> />
+            <button type="submit">Dislike</button>
 
-          <% if(user.following.indexOf(twit.author._id) != -1) { %>
-          <form action="/follow" method="POST">
+            <<<<<<< HEAD=======<% if(userSession.following.indexOf(twit.author._id) != -1) { %> <form action="/follow"
+              method="POST">
 
-            <input type="hidden" name="author" value=<%- twit.author._id %> />
-            <button type="submit">Unfollow</button>
+              <input type="hidden" name="author" value=<%- twit.author._id %> />
+              <button type="submit">Unfollow</button>
+              >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
           </form>
           <% } else { %>
-          <form action="/follow" method="POST">
+          <form action="/like" method="POST">
 
-            <input type="hidden" name="author" value=<%- twit.author._id %> />
-            <button type="submit">Follow</button>
+            <<<<<<< HEAD <input type="hidden" name="author" value=<%-twit._id %> />
+            <button type="submit">Like!</button>
           </form>
           <% } %>
-
+          =======
 
 
         </div>
@@ -54,7 +69,7 @@
           <div>
             <p> <%- twit.dateOfCreation %></p>
             <p> <%- twit.likes.length %></p>
-            <% if (twit.likes.indexOf(user._id) != -1) { %>
+            <% if (twit.likes.indexOf(userSession._id) != -1) { %>
             <form action="/like" method="POST">
 
               <input type="hidden" name="author" value=<%- twit._id %> />
@@ -70,7 +85,16 @@
             <% } %>
           </div>
 
+          >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
         </div>
+
+        <<<<<<< HEAD=======<% } else { %> <h2 class="titleHome">Ingresar a Twita</h3>
+          <h6 class="text-center">Únete al twita ya mismo</h5>
+            <div class="d-flex justify-content-center">
+              <a class="btn btn-signUp btn-lg" href="http://localhost:3000/registro">Regístrate aquí</a>
+              <a class="btn btn-logIn-home btn-lg" href="http://localhost:3000/login">Iniciar sesión</a>
+              >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
+            </div>
       </div>
       <% }) %>
     </div>

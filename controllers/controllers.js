@@ -51,7 +51,11 @@ module.exports = {
     homeFeed: (req, res) => {
         console.log(req.session);
         
-        let user = false
+        let userSession = {
+          _id: "voidUsername",
+          following: [],
+          likes: [],
+        };
         if(req.isAuthenticated()) {
             User.findById(req.session.passport.user._id)
             .then(loggedUser => {
@@ -61,11 +65,11 @@ module.exports = {
                 .populate('author')
                 //.populate('likes')
                 .then(feedResults => {
-                    res.render('home', {user: loggedUser, feedResults})
+                    res.render('home', {userSession: loggedUser, feedResults})
                 })
             }) 
         } else {
-            res.render('home', {user})
+            res.render('home', {userSession})
         }
             
         
@@ -121,17 +125,26 @@ module.exports = {
         let username = req.params.username
         let userSession = {
           _id: "voidUsername",
+          following: [],
+          likes: [],
         };
         if (req.isAuthenticated()) {
           userSession = req.session.passport.user;
         }
-        User.findOne({username})
-        .populate('twits')
-        .then(userProfile => {
-            
-            //console.log(user);
-            res.render('user-profile', {userProfile, userSession})
+        User.findById(userSession._id)
+        .then(result => {
+          if (result != null) {
+            userSession = result;
+          }
+          
+          
+          User.findOne({username})
+          .populate('twits')
+          .then(userProfile => {
+          res.render('user-profile', {userProfile, userSession})
         })
+        })
+        
     },
 
     like: (req, res) => {
