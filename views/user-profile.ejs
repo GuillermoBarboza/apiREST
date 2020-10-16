@@ -24,42 +24,53 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-2">
-          
-            <img src=<%- user.avatar %> class="img-thumbnail avatar-profile" alt="foto de perfil" />
-            <p><%- user.username %></p>
-            <a href="http://localhost:3000/logout">Log Out</a>
-          
+          <img
+            src="<%- user.avatar %>"
+            class="img-thumbnail avatar-profile"
+            alt="foto de perfil"
+          />
+          <p><%- user.username %></p>
+          <a href="http://localhost:3000/logout">Log Out</a>
         </div>
         <div class="col-sm-8">
           <h1>Twits de <%- user.username %></h1>
-         
+
           <!-- cada twit  -->
-          <div class="twit-container ">
+          <div class="twit-container">
             <% user.twits.forEach(twit => { %>
             <div class="row my-3">
               <!-- Usuario -->
               <div class="col-12 d-flex justify-content-between">
-                <img class="img-thumbnail avatar-twit" src=<%- user.avatar %> alt="" />
-                <p><%- user.firstname %> <%- user.lastname %> </p>
+                <img
+                  class="img-thumbnail avatar-twit"
+                  src="<%-
+                  user.avatar
+                  %>"
+                  alt=""
+                />
+                <p><%- user.firstname %> <%- user.lastname %></p>
                 <p><%- user.username %></p>
+
+                <a
+                  type="submit"
+                  href="/eliminar/<%= twit._id %>"
+                  class="btn btn-danger"
+                  >Eliminar twit</a
+                >
+
                 <form action="/follow" method="POST">
-                    
-                    <input type="hidden" name="author" value=<%- user._id %> />
-                    <button type="submit">Follow</button>
+                  <input type="hidden" name="author" value="<%-user._id %>" />
+                  <button type="submit">Follow</button>
                 </form>
-                
               </div>
               <!-- Twit -->
               <div class="col-12">
-                <p>
-                    <%- twit.body %>
-                </p>
+                <p><%- twit.body %></p>
                 <div>
-                    <p> <%- twit.dateOfCreation %></p>
-                    <p> <%- twit.likes %></p>
-                    <button>Like!</button>
+                  <p><%- twit.dateOfCreation %></p>
+                  <p><%- twit.likes %></p>
+                  <button>Like!</button>
                 </div>
-                
               </div>
             </div>
             <% }) %>

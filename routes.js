@@ -38,6 +38,9 @@ router.post('/login', controllers.signIn)
 
 router.get("/logout", controllers.logout);
 
+//delete twit
+router.get("/eliminar/:id", controllers.isLoggedIn, controllers.deleteTwit)
+
 
 // sign up routes
 router.get('/registro', (req, res) =>{
