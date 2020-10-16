@@ -18,13 +18,13 @@
           <textarea name="body" rows="4"> </textarea>
           <div><button type="submit">Twit!</button></div>
         </form>
-        <% } else { %>
+       
         <form action="/follow" method="POST">
 
           <input type="hidden" name="author" value=<%- twit.author._id %> />
           <button type="submit">Follow</button>
         </form>
-        <% } %>
+      
 
 
 
@@ -43,21 +43,17 @@
             <input type="hidden" name="author" value=<%- twit._id %> />
             <button type="submit">Dislike</button>
 
-            <<<<<<< HEAD=======<% if(userSession.following.indexOf(twit.author._id) != -1) { %> <form action="/follow"
-              method="POST">
-
-              <input type="hidden" name="author" value=<%- twit.author._id %> />
-              <button type="submit">Unfollow</button>
-              >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
+          
+            
           </form>
           <% } else { %>
           <form action="/like" method="POST">
 
-            <<<<<<< HEAD <input type="hidden" name="author" value=<%-twit._id %> />
+          <input type="hidden" name="author" value=<%-twit._id %> />
             <button type="submit">Like!</button>
           </form>
           <% } %>
-          =======
+          
 
 
         </div>
@@ -85,31 +81,22 @@
             <% } %>
           </div>
 
-          >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
+        
         </div>
 
-        <<<<<<< HEAD=======<% } else { %> <h2 class="titleHome">Ingresar a Twita</h3>
+      <% } else { %> 
+      <h2 class="titleHome">Ingresar a Twita</h3>
           <h6 class="text-center">Únete al twita ya mismo</h5>
             <div class="d-flex justify-content-center">
               <a class="btn btn-signUp btn-lg" href="http://localhost:3000/registro">Regístrate aquí</a>
               <a class="btn btn-logIn-home btn-lg" href="http://localhost:3000/login">Iniciar sesión</a>
-              >>>>>>> bb99538d2d52753ae18609a98d9f485337c22212
+              
             </div>
       </div>
-      <% }) %>
+      <% } %>
     </div>
 
-    <a href="http://localhost:3000/logout">Log Out</a>
-    <% } else { %>
-    <h2 class="titleHome">Ingresar a Twita</h3>
-      <h6 class="text-center">Únete al twita ya mismo</h5>
-        <div class="d-flex justify-content-center">
-          <a class="btn btn-signUp btn-lg" href="http://localhost:3000/registro">Regístrate aquí</a>
-          <a class="btn btn-logIn-home btn-lg" href="http://localhost:3000/login">Iniciar sesión</a>
-        </div>
-  </div>
-  </div>
-  <% } %>
+  
 </body>
 
 </html>
