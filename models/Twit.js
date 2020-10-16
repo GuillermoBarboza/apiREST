@@ -7,7 +7,7 @@ const twitSchema = new Schema({
     },
     body: String,
     dateOfCreation: Date,
-    likes: Number,
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User'}],
 })
 
 

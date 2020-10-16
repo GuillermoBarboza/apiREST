@@ -31,7 +31,7 @@ module.exports = {
                     author: user._id,
                     body: faker.lorem.paragraph(),
                     dateOfCreation: randomDate(new Date(2020, 0, 1), new Date(), 0, 24),
-                    likes: 0,
+                    
                 });
 
                 twit.save(function(err, twit) {
@@ -58,6 +58,7 @@ module.exports = {
                 .limit(20)
                 .sort('-dateOfCreation')
                 .populate('author')
+                //.populate('likes')
                 .then(feedResults => {
                     res.render('home', {user: loggedUser, feedResults})
                 })
@@ -126,7 +127,34 @@ module.exports = {
         })
     },
 
-    addToFollowing: (req, res) => {
+    like: (req, res) => {
+        let newLike = req.body.author;
+        console.log(" new like" , newLike);
+        
+        
+        Twit.findById(newLike)
+        .then(twit => {
+            console.log(twit);
+            
+            if (twit.likes.indexOf(req.session.passport.user._id) != -1) {
+                twit.likes.splice(twit.likes.indexOf(req.session.passport.user._id), 1)
+                twit.markModified('twit.likes')
+                twit.save();
+                res.redirect('/')
+                
+            } else {
+                twit.likes.push(req.session.passport.user._id);
+                twit.markModified('twit.likes')
+                twit.save();
+                res.redirect('/')
+            }
+            
+        })
+        
+        
+    },
+
+    followUnfollow: (req, res) => {
         //console.log(req.session);
         let newFollowing = req.body.author;
         
