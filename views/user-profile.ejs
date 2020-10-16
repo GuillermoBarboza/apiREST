@@ -19,33 +19,36 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-2">
-        <img src="<%- user.avatar %>" class="img-thumbnail avatar-profile" alt="foto de perfil" />
-        <p><%- user.username %></p>
+        <img src="<%- userProfile.avatar %>" class="img-thumbnail avatar-profile" alt="foto de perfil" />
+        <p><%- userProfile.username %></p>
         <a href="http://localhost:3000/logout">Log Out</a>
       </div>
       <div class="col-sm-8">
-        <h1>Twits de <%- user.username %></h1>
+        <h1>Twits de <%- userProfile.username %></h1>
 
         <!-- cada twit  -->
         <div class="twit-container">
-          <% user.twits.forEach(twit => { %>
+          <% userProfile.twits.forEach(twit => { %>
           <div class="row my-3">
             <!-- Usuario -->
             <div class="col-12 d-flex justify-content-between">
               <img class="img-thumbnail avatar-twit" src="<%-
-                  user.avatar
+              userProfile.avatar
                   %>" alt="" />
-              <p><%- user.firstname %> <%- user.lastname %></p>
-              <p><%- user.username %></p>
-              <% if(twit.author._id.toString() === user._id.toString()) {%>
+              <p><%- userProfile.firstname %> <%- userProfile.lastname %></p>
+              <p><%- userProfile.username %></p>
+              <% console.log(twit.author._id.toString(), userSession._id.toString()) %>
+              <% console.log(twit.author._id.toString() === userSession._id.toString()) %>  
 
-              <a type="submit" href="/eliminar/<%= twit._id %>" class="btn btn-danger">Eliminar twit</a>
+              <% if(twit.author._id.toString() === userSession._id.toString()) {%>
+
+                <a  href="/eliminar/<%- twit._id %>" class="btn btn-danger">Eliminar twit</a>
               <% } else { %>
-              <p>mi twit</p>
+                <p>mi twit</p>
               <% } %>
 
               <form action="/follow" method="POST">
-                <input type="hidden" name="author" value="<%-user._id %>" />
+                <input type="hidden" name="author" value="<%-userProfile._id %>" />
                 <button type="submit">Follow</button>
               </form>
             </div>

@@ -118,12 +118,18 @@ module.exports = {
     getUserProfile: (req, res) => {
         //console.log(req.params)
         let username = req.params.username
+        let userSession = {
+          _id: "voidUsername",
+        };
+        if (req.isAuthenticated()) {
+          userSession = req.session.passport.user;
+        }
         User.findOne({username})
         .populate('twits')
-        .then(user => {
+        .then(userProfile => {
             
             //console.log(user);
-            res.render('user-profile', {user})
+            res.render('user-profile', {userProfile, userSession})
         })
     },
 
@@ -208,12 +214,14 @@ module.exports = {
       }, 
 
       deleteTwit: (req, res) => {
-         const twToDelete = req.params._id
+        
+         const _id = req.params.id
         Twit.deleteOne({
-          twToDelete //VER $pull para quitar del array
+          _id: _id, //VER $pull para quitar del array
         })
         .then(() => {
-          console.log("Twit eliminado");
+
+          console.log("Twit eliminado", _id);
         });
         res.redirect("back")  
         }  
