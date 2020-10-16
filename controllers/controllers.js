@@ -51,7 +51,11 @@ module.exports = {
     homeFeed: (req, res) => {
         console.log(req.session);
         
-        let user = false
+        let userSession = {
+          _id: "voidUsername",
+          following: [],
+          likes: [],
+        };
         if(req.isAuthenticated()) {
             User.findById(req.session.passport.user._id)
             .then(loggedUser => {
@@ -61,11 +65,11 @@ module.exports = {
                 .populate('author')
                 //.populate('likes')
                 .then(feedResults => {
-                    res.render('home', {user: loggedUser, feedResults})
+                    res.render('home', {userSession: loggedUser, feedResults})
                 })
             }) 
         } else {
-            res.render('home', {user})
+            res.render('home', {userSession})
         }
             
         
