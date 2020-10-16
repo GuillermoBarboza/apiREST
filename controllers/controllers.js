@@ -213,9 +213,18 @@ module.exports = {
         }
       }, 
 
-      deleteTwit: (req, res) => {
-        
-         const _id = req.params.id
+      deleteTwit: async (req, res) => {
+        const twit = await Twit.findById(req.params.id.toString());
+        await Twit.deleteOne({ _id: req.params.id.toString()});
+        const user = await User.findById(twit.author._id);
+        const index = user.twits.indexOf(req.params.id.toString());
+        user.twits.splice(index,1);
+        user.save()
+        res.redirect("back")
+      }
+
+     /*  deleteTwit: (req, res) => {
+         const twToDelete = req.params._id
         Twit.deleteOne({
           _id: _id, //VER $pull para quitar del array
         })
@@ -224,7 +233,7 @@ module.exports = {
           console.log("Twit eliminado", _id);
         });
         res.redirect("back")  
-        }  
+        }   */
   }
 
 
