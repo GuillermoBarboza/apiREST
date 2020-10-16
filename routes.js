@@ -41,9 +41,7 @@ router.get("/logout", controllers.logout);
 //delete twit
 router.get("/eliminar/:id", controllers.isLoggedIn, controllers.deleteTwit)
 
-router.get('/settings', (req, res) =>{
-    res.render('settings')
-})
+router.get('/settings', controllers.userSettings)
 
 // sign up routes
 router.get('/registro', (req, res) =>{

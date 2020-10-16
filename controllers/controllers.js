@@ -240,6 +240,26 @@ module.exports = {
      //change profile picture
      changeProfilePicture: (req, res) => {
 
+     },
+
+     userSettings: (req, res) => {
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      if (req.isAuthenticated()) {
+        userSession = req.session.passport.user;
+      }
+      User.findById(userSession._id)
+      .then(result => {
+        if (result != null) {
+          userSession = result;
+        }
+        
+        res.render('settings', {userSession})
+      
+      })
      }
   }
 
