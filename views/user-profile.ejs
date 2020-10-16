@@ -21,6 +21,8 @@
       <div class="col-sm-2">
         <img src="<%- userProfile.avatar %>" class="img-thumbnail avatar-profile" alt="foto de perfil" />
         <p><%- userProfile.username %></p>
+
+
         <a href="http://localhost:3000/logout">Log Out</a>
       </div>
       <div class="col-sm-8">
@@ -38,13 +40,13 @@
               <p><%- userProfile.firstname %> <%- userProfile.lastname %></p>
               <p><%- userProfile.username %></p>
               <% console.log(twit.author._id.toString(), userSession._id.toString()) %>
-              <% console.log(twit.author._id.toString() === userSession._id.toString()) %>  
+              <% console.log(twit.author._id.toString() === userSession._id.toString()) %>
 
               <% if(twit.author._id.toString() === userSession._id.toString()) {%>
 
-                <a  href="/eliminar/<%- twit._id %>" class="btn btn-danger">Eliminar twit</a>
+              <a href="/eliminar/<%- twit._id %>" class="btn btn-danger">Eliminar twit</a>
               <% } else { %>
-                <p>mi twit</p>
+              <p>mi twit</p>
               <% } %>
 
               <form action="/follow" method="POST">

@@ -3,6 +3,7 @@ const Twit = require('../models/Twit')
 const faker = require('faker')
 const passport = require("passport")
 const bcrypt = require('bcryptjs')
+const formidable = require('formidable')
 
 function randomDate(start, end, startHour, endHour) {
     var date = new Date(+start + Math.random() * (end - start));
@@ -221,19 +222,12 @@ module.exports = {
         user.twits.splice(index,1);
         user.save()
         res.redirect("back")
-      }
+      },
 
-     /*  deleteTwit: (req, res) => {
-         const twToDelete = req.params._id
-        Twit.deleteOne({
-          _id: _id, //VER $pull para quitar del array
-        })
-        .then(() => {
+     //change profile picture
+     changeProfilePicture: (req, res) => {
 
-          console.log("Twit eliminado", _id);
-        });
-        res.redirect("back")  
-        }   */
+     }
   }
 
 
