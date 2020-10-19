@@ -21,7 +21,8 @@ router.get("js/app.js", (req, res) => {
 router.get('/home', controllers.homeFeed)
 // USER PROFILE
 router.get('/profile/:username', controllers.getUserProfile)
-
+// discover users route
+router.get('/discover', controllers.discoverFeed)
 // Twitealo ruta
 router.post('/twitealo', controllers.isLoggedIn, controllers.createTwit)
 
