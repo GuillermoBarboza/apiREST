@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require('bcryptjs')
-const User = require('../twitter_clone/models/User');
+const User = require('./models/User');
 
 
 
