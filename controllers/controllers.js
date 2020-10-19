@@ -74,6 +74,24 @@ module.exports = {
             
         
     },
+
+    logInView: (req, res) => {
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      res.render('login', {userSession})
+    },
+
+    registerView: (req, res) => {
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      res.render('register', {userSession})
+    },
     
     signIn: passport.authenticate("local", {
         successRedirect: "/home",
@@ -254,7 +272,10 @@ module.exports = {
       User.findById(userSession._id)
       .then(result => {
         if (result != null) {
+
           userSession = result;
+          console.log(typeof userSession._id);
+          
         }
         
         res.render('settings', {userSession})

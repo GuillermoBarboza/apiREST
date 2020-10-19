@@ -2,16 +2,16 @@
 <html lang="en">
   <%- include("partials/head") %>
   <body>
+    <%- include("partials/navbar") %>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <img src="" alt="Twita logo" />
           <h1 class="text-center">Log In to Twita</h1>
         </div>
         <div class="col-md-12">
           <form
             id="form-logIn"
-            class="form-group"
+            class="form-group m-auto"
             action="/login"
             method="POST"
           >
