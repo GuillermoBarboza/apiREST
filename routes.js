@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 const controllers = require('./controllers/controllers')
-const passport = require('passport')
+const path = require('path')
 
 router.use(express.static(path.join(__dirname, "public")));
 //RUTAS
