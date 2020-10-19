@@ -3,7 +3,7 @@ const router = express();
 const controllers = require('./controllers/controllers')
 const path = require('path')
 
-router.use(express.static(path.join(__dirname, "public")));
+
 //RUTAS
 router.get("/css/styles.css", (req, res) => {
     res.sendFile(__dirname + "/public/css/styles.css");

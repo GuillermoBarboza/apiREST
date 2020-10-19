@@ -5,15 +5,14 @@ const routes = require('./routes')
 const passport = require("passport");
 const initializePassport = require("./passport-config");
 const app = express();
+const path = require('path')
 
-
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.set("views", path.join(__dirname, "views"));
 
-
-app.set('view engine', 'ejs');
 
 app.use(
     session({
