@@ -1,7 +1,7 @@
 {
     "versions": 2,
     "builds": [
-        { "src": "server.js", "use": "@now/node-server" },
+        { "src": "/server.js", "use": "@now/node-server" },
         { "src": "/public/**/*", "use": "@now/static" }
     ],
     "routes": [
