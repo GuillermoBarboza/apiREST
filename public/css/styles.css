@@ -30,6 +30,19 @@
   opacity: 80%;
 }
 
+/*HOME LOGGED*/
+.btnTwit {
+  background-color: #1da1f2;
+  color: white;
+  margin-top: 0.5rem;
+  border-radius: 70px;
+}
+
+.btnTwit:hover {
+  background-color: #1a91da;
+  color: white;
+}
+
 /* URL LOGIN */
 #form-logIn {
   margin-top: 0.5rem;
@@ -66,19 +79,55 @@
 
 /* TWITS */
 
+.TwAuthorName {
+  margin-right: 0.5rem;
+  color: #14171a;
+}
+
+.TwAuthorName:hover {
+  color: #14171a;
+}
+
+.TwAuthorUsername {
+  color: #657786;
+}
+
+.twContent {
+  color: #14171a;
+}
+
 .twit-container {
   padding: 15px;
-  background-color: antiquewhite;
   border-radius: 15px;
 }
+
+.twDate {
+  margin-top: 1rem;
+  color: #657786;
+}
+
+.btn-like {
+  margin-left: 1rem;
+}
+
+.btn-dislike {
+  margin-left: 1rem;
+}
+
+.like-counter {
+  margin-top: 0.5rem;
+}
 .avatar-profile {
-    
-    border: 2px solid rgb(177, 103, 103);
-    object-fit: cover;
-    position: relative;
-    
+  border: 2px solid rgb(177, 103, 103);
+  object-fit: cover;
+  position: relative;
 }
 .avatar-twit {
-    width: 150px;
-    object-fit: cover;
+  object-fit: cover;
+  height: 80px;
+  width: 80px;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  background-size: 100% auto;
 }
