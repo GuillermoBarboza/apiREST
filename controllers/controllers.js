@@ -120,11 +120,10 @@ module.exports = {
       res.render('register', {userSession})
     },
     
-    signIn: (req, res) => { passport.authenticate("local", {
+    signIn: passport.authenticate("local", {
         successRedirect: "/home",
         failureRedirect: "/login",
-      })
-    },
+      }),
 
     signUp:  (req, res) => {
       const password = bcrypt.hashSync(req.body.password, 10);
