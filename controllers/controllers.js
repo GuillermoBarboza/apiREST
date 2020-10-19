@@ -74,11 +74,57 @@ module.exports = {
             
         
     },
+
+    discoverFeed: (req, res) => {
+      console.log(req.session);
+      
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      if(req.isAuthenticated()) {
+          User.findById(req.session.passport.user._id)
+          .then(loggedUser => {
+              Twit.find({author: {$nin: loggedUser.following} })
+              .limit(20)
+              .sort('-dateOfCreation')
+              .populate('author')
+              //.populate('likes')
+              .then(feedResults => {
+                  res.render('discover-users', {userSession: loggedUser, feedResults})
+              })
+          }) 
+      } else {
+          res.render('home', {userSession})
+      }
+          
+      
+  },
+
+    logInView: (req, res) => {
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      res.render('login', {userSession})
+    },
+
+    registerView: (req, res) => {
+      let userSession = {
+        _id: "voidUsername",
+        following: [],
+        likes: [],
+      };
+      res.render('register', {userSession})
+    },
     
-    signIn: passport.authenticate("local", {
+    signIn: (req, res) => { passport.authenticate("local", {
         successRedirect: "/home",
         failureRedirect: "/login",
-      }),
+      })
+    },
 
     signUp:  (req, res) => {
       const password = bcrypt.hashSync(req.body.password, 10);
@@ -254,7 +300,10 @@ module.exports = {
       User.findById(userSession._id)
       .then(result => {
         if (result != null) {
+
           userSession = result;
+          console.log(typeof userSession._id);
+          
         }
         
         res.render('settings', {userSession})

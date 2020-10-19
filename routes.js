@@ -21,7 +21,8 @@ router.get("js/app.js", (req, res) => {
 router.get('/home', controllers.homeFeed)
 // USER PROFILE
 router.get('/profile/:username', controllers.getUserProfile)
-
+// discover users route
+router.get('/discover', controllers.discoverFeed)
 // Twitealo ruta
 router.post('/twitealo', controllers.isLoggedIn, controllers.createTwit)
 
@@ -30,9 +31,7 @@ router.post('/follow', controllers.isLoggedIn, controllers.followUnfollow)
 // LIKES
 router.post('/like',controllers.isLoggedIn, controllers.like)
 // Login routes
-router.get('/login', (req, res) =>{
-    res.render('login')
-})
+router.get('/login', controllers.logInView)
 
 router.post('/login', controllers.signIn)
 
@@ -44,9 +43,7 @@ router.get("/eliminar/:id", controllers.isLoggedIn, controllers.deleteTwit)
 router.get('/settings', controllers.userSettings)
 
 // sign up routes
-router.get('/registro', (req, res) =>{
-    res.render('register')
-})
+router.get('/registro', controllers.registerView)
 router.post("/registro", controllers.signUp)
 
 
