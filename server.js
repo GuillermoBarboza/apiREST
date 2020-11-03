@@ -4,10 +4,12 @@ const session = require('express-session');
 const routes = require('./routes')
 const passport = require("passport");
 const initializePassport = require("./passport-config");
+const cors = require('cors')
 const app = express();
 // PATH.JOIN porque sino el build de vercel(deploy) no entiende
 const path = require('path')
 
+app.use(cors())
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
