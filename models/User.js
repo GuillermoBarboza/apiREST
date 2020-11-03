@@ -13,6 +13,7 @@ const userSchema = new Schema({
     twits: [{ type: Schema.Types.ObjectId, ref: 'Twit'}],
     following: [{ type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    token: String,
 })
 
 

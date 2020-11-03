@@ -1,9 +1,7 @@
 const User = require("../models/User");
 const Twit = require("../models/Twit");
 const faker = require("faker");
-const passport = require("passport");
 const bcrypt = require("bcryptjs");
-const formidable = require("formidable");
 
 function randomDate(start, end, startHour, endHour) {
   var date = new Date(+start + Math.random() * (end - start));
@@ -46,14 +44,13 @@ module.exports = {
   },
 
   homeFeed: (req, res) => {
-    console.log(req.session);
-
+    let isLogged = false
     let userSession = {
       _id: "voidUsername",
       following: [],
       likes: [],
     };
-    if (req.isAuthenticated()) {
+    if (isLogged) {
       User.findById(req.session.passport.user._id).then((loggedUser) => {
         Twit.find({ author: { $in: loggedUser.following } })
           .limit(20)
@@ -114,21 +111,28 @@ module.exports = {
     res.json({ userSession });
   },
 
-  signIn: passport.authenticate("local", {
-    successRedirect: "/home",
-    failureRedirect: "/login",
-  }),
+  signIn: (req, res) =>{
+    let username = req.body.username;
+    let password = req.body.password;
+    User.findOne({ username: req.body.username })
+    .then(result => {
+      console.log(result)
+      res.json(result)
+    })
+
+  },
 
   signUp: (req, res) => {
     const password = bcrypt.hashSync(req.body.password, 10);
+    const token = jwt.sign({username: req.body.username, email: req.body.email}, process.env.JWTKEY)
     const user = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       password: password,
       email: req.body.email,
-      avatar:
-        "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
+      avatar: "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
+      token: token,
     });
     user.save();
     res.redirect("/home");
