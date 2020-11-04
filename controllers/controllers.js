@@ -2,7 +2,7 @@ const User = require("../models/User");
 const Twit = require("../models/Twit");
 const faker = require("faker");
 const bcrypt = require("bcryptjs");
-
+const jwt = require('jsonwebtoken')
 function randomDate(start, end, startHour, endHour) {
   var date = new Date(+start + Math.random() * (end - start));
   var hour = (startHour + Math.random() * (endHour - startHour)) | 0;
@@ -113,18 +113,19 @@ module.exports = {
 
   signIn: (req, res) =>{
     let username = req.body.username;
-    let password = req.body.password;
+    let password = req.body.password; 
     User.findOne({ username: req.body.username })
-    .then(result => {
-      console.log(result)
-      res.json(result)
+    .then(user => {
+      console.log(user)
+      let token = jwt.sign({user}, process.env.JWTKEY)
+      res.json(token)
     })
 
   },
 
   signUp: (req, res) => {
     const password = bcrypt.hashSync(req.body.password, 10);
-    const token = jwt.sign({username: req.body.username, email: req.body.email}, process.env.JWTKEY)
+    let token = jwt.sign({username: req.body.username, email: req.body.email}, process.env.JWTKEY)
     const user = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -241,7 +242,7 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    req.logout();
+    
     res.redirect("/login");
   },
 
