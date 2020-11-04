@@ -2,7 +2,7 @@ const User = require("../models/User");
 const Twit = require("../models/Twit");
 const faker = require("faker");
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 function randomDate(start, end, startHour, endHour) {
   var date = new Date(+start + Math.random() * (end - start));
   var hour = (startHour + Math.random() * (endHour - startHour)) | 0;
@@ -44,7 +44,7 @@ module.exports = {
   },
 
   homeFeed: (req, res) => {
-    let isLogged = false
+    let isLogged = false;
     let userSession = {
       _id: "voidUsername",
       following: [],
@@ -111,28 +111,39 @@ module.exports = {
     res.json({ userSession });
   },
 
-  signIn: (req, res) =>{
-    let username = req.body.username;
-    let password = req.body.password; 
-    User.findOne({ username: req.body.username })
-    .then(user => {
-      console.log(user)
-      let token = jwt.sign({user}, process.env.JWTKEY)
-      res.json(token)
-    })
-
+  signIn: (req, res) => {
+    console.log("req", req.body);
+    User.findOne({
+      username: req.body.username,
+    }).then((result) => {
+      let user = result;
+      bcrypt
+        .compare(req.body.password, result.password)
+        .then((passwordCheck) => {
+          console.log("passwordCheck", passwordCheck);
+          if (passwordCheck) {
+            res.json(user);
+          } else {
+            res.json({});
+          }
+        });
+    });
   },
 
   signUp: (req, res) => {
     const password = bcrypt.hashSync(req.body.password, 10);
-    let token = jwt.sign({username: req.body.username, email: req.body.email}, process.env.JWTKEY)
+    let token = jwt.sign(
+      { username: req.body.username, email: req.body.email },
+      process.env.JWTKEY
+    );
     const user = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       password: password,
       email: req.body.email,
-      avatar: "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
+      avatar:
+        "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
       token: token,
     });
     user.save();
@@ -242,7 +253,6 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    
     res.redirect("/login");
   },
 
