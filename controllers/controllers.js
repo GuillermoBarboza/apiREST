@@ -3,6 +3,7 @@ const Twit = require("../models/Twit");
 const faker = require("faker");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 function randomDate(start, end, startHour, endHour) {
   var date = new Date(+start + Math.random() * (end - start));
   var hour = (startHour + Math.random() * (endHour - startHour)) | 0;
@@ -112,7 +113,6 @@ module.exports = {
   },
 
   signIn: (req, res) => {
-    console.log("req", req.body);
     User.findOne({
       username: req.body.username,
     }).then((result) => {
@@ -122,7 +122,8 @@ module.exports = {
         .then((passwordCheck) => {
           console.log("passwordCheck", passwordCheck);
           if (passwordCheck) {
-            res.json(user);
+            let token = jwt.sign({user}, process.env.JWTKEY)
+            res.json(token);
           } else {
             res.json({});
           }
