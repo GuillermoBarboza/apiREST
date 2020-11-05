@@ -19,6 +19,8 @@ router.get("js/app.js", (req, res) => {
 }) 
 
 router.get('/home', controllers.homeFeed)
+
+router.get('/home/:token', controllers.homeFeed)
 // USER PROFILE
 router.get('/profile/:username', controllers.getUserProfile)
 // discover users route

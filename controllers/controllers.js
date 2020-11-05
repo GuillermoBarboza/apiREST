@@ -51,14 +51,19 @@ module.exports = {
       following: [],
       likes: [],
     };
-    if (isLogged) {
-      User.findById(req.session.passport.user._id).then((loggedUser) => {
+
+    if (req.params.token) {
+      let decoded = jwt.verify(req.params.token, process.env.JWTKEY)
+
+      User.findById(decoded.user._id).then((loggedUser) => {
         Twit.find({ author: { $in: loggedUser.following } })
           .limit(20)
           .sort("-dateOfCreation")
           .populate("author")
           //.populate('likes')
           .then((feedResults) => {
+            console.log(Object.keys(loggedUser))
+            loggedUser.password = 'Top-Secret' 
             res.json({ userSession: loggedUser, feedResults });
           });
       });
@@ -179,9 +184,7 @@ module.exports = {
       following: [],
       likes: [],
     };
-    if (req.isAuthenticated()) {
-      userSession = req.session.passport.user;
-    }
+    
     User.findById(userSession._id).then((result) => {
       if (result != null) {
         userSession = result;
