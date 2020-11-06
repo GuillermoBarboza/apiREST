@@ -123,6 +123,7 @@ module.exports = {
               let user = {
                 username: response.username,
                 id: response.id,
+                avatar: response.avatar,
               };
               console.log("pass deleted", response);
               res.json({ token: response.token });
