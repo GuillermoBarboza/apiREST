@@ -45,8 +45,6 @@ module.exports = {
   },
 
   homeFeed: (req, res) => {
-    console.log("req.params", req.user);
-
     if (req.user.userId) {
       User.findById(req.user.userId)
         .populate("twits")
@@ -68,7 +66,9 @@ module.exports = {
   },
 
   discoverFeed: (req, res) => {
-    User.findById(req.user.userId).then((loggedUser) => {
+    console.log("req user id", req.user.id);
+    User.findById(req.user.id).then((loggedUser) => {
+      console.log("loggeduser", loggedUser);
       Twit.find({ author: { $nin: loggedUser.following } })
         .limit(20)
         .sort("-dateOfCreation")

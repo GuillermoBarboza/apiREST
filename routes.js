@@ -53,7 +53,7 @@ router.post("/api/users/register", controllers.signUp);
 router.get("/register", controllers.registerView);
 // discover users route
 router.get(
-  "/api/users/discover",
+  "/api/twits/discover",
   jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
   controllers.discoverFeed
 );
