@@ -56,8 +56,8 @@ router.get("/login", controllers.logInView);
 //LOGOUT
 router.get("/logout", controllers.logout);
 //REGISTRO
-router.post("/api/users/registro", controllers.signUp);
-router.get("/registro", controllers.registerView);
+router.post("/api/users/register", controllers.signUp);
+router.get("/register", controllers.registerView);
 // discover users route
 router.get("/api/users/discover", controllers.discoverFeed);
 // USER PROFILE

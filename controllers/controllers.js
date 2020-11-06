@@ -45,9 +45,9 @@ module.exports = {
   },
 
   homeFeed: (req, res) => {
-    console.log('req.params', req.user)
+    console.log("req.params", req.user);
 
-    if (req.user.userId) { 
+    if (req.user.userId) {
       User.findById(req.user.userId).then((loggedUser) => {
         Twit.find({ author: { $in: loggedUser.following } })
           .limit(20)
@@ -55,8 +55,7 @@ module.exports = {
           .populate("author")
           //.populate('likes')
           .then((feedResults) => {
-            
-            loggedUser.password = 'Top-Secret' 
+            loggedUser.password = "Top-Secret";
             res.json(feedResults);
           });
       });
@@ -111,30 +110,32 @@ module.exports = {
   },
 
   signIn: (req, res) => {
+    console.log("req body", req.body);
     User.findOne({
       username: req.body.username,
     }).then((result) => {
+      console.log("result", result);
       let user = result;
       bcrypt
         .compare(req.body.password, result.password)
         .then((passwordCheck) => {
           console.log("passwordCheck", passwordCheck);
           if (passwordCheck) {
-            
-            let token = jwt.sign({userId: user._id}, process.env.JWTKEY)
-            console.log('token en back', token);
-            
-            User.findOneAndUpdate({username : req.body.username}, {token: token }, {new: true})
-            .then(response => {
-              console.log('user', response)
+            let token = jwt.sign({ userId: user._id }, process.env.JWTKEY);
+            console.log("token en back", token);
+
+            User.findOneAndUpdate(
+              { username: req.body.username },
+              { token: token },
+              { new: true }
+            ).then((response) => {
+              console.log("user", response);
               let user = {
                 username: response.username,
-
-              }
-              console.log("pass deleted", response)
-              res.json({user, token:response.token});
-            })
-            
+              };
+              console.log("pass deleted", response);
+              res.json({ user, token: response.token });
+            });
           } else {
             res.json({});
           }
@@ -143,7 +144,7 @@ module.exports = {
   },
 
   signUp: (req, res) => {
-    console.log('pista 1')
+    console.log("pista 1");
     let token = jwt.sign(
       { username: req.body.username, email: req.body.email },
       process.env.JWTKEY
@@ -152,7 +153,7 @@ module.exports = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, process.env.SALT),
       email: req.body.email,
       avatar:
         "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
@@ -166,8 +167,8 @@ module.exports = {
     console.log(req.user);
 
     let twit = new Twit(req.body);
-    console.log('twit en el back', twit);
-    
+    console.log("twit en el back", twit);
+
     twit.save(function (err, twit) {
       if (err) return res.send(err);
       //console.log("author id", req.body.author);
@@ -175,13 +176,12 @@ module.exports = {
 
       User.findById(req.user.userId, function (err, user) {
         if (err) return res.send(err);
-        console.log("user",user);
+        console.log("user", user);
 
         user.twits.push(twit);
         user.save();
-
       });
-    }); 
+    });
 
     res.json({});
   },
@@ -194,7 +194,7 @@ module.exports = {
       following: [],
       likes: [],
     };
-    
+
     User.findById(userSession._id).then((result) => {
       if (result != null) {
         userSession = result;
