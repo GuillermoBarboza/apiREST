@@ -2,7 +2,7 @@ const express = require("express");
 const router = express();
 const controllers = require('./controllers/controllers')
 const path = require('path')
-
+const jwtMiddleware = require('express-jwt')
 
 //RUTAS
 router.get("/css/styles.css", (req, res) => {
@@ -14,13 +14,15 @@ router.get("js/app.js", (req, res) => {
 
  /* router.get('/', controllers.fillDb)  */
 
- router.get('/', (req, res) => {
-    res.redirect('/home')
-}) 
+/* RUTAS API */
+router.get('/api/twits/feed', jwtMiddleware({secret: process.env.JWTKEY, algorithms: ["HS256"]}), controllers.homeFeed)
 
-router.get('/home', controllers.homeFeed)
+router.post('/api/twits', jwtMiddleware({secret: process.env.JWTKEY, algorithms: ["HS256"]}), controllers.createTwit)
 
-router.get('/home/:token', controllers.homeFeed)
+router.get('/api/profile')
+
+
+
 // USER PROFILE
 router.get('/profile/:username', controllers.getUserProfile)
 // discover users route
