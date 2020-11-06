@@ -48,47 +48,37 @@ module.exports = {
     console.log("req.params", req.user);
 
     if (req.user.userId) {
-      User.findById(req.user.userId).then((loggedUser) => {
-        Twit.find({ author: { $in: loggedUser.following } })
-          .limit(20)
-          .sort("-dateOfCreation")
-          .populate("author")
-          //.populate('likes')
-          .then((feedResults) => {
-            loggedUser.password = "Top-Secret";
-            res.json(feedResults);
-          });
-      });
+      User.findById(req.user.userId)
+        .populate("twits")
+        .limit(7)
+        .then((loggedUser) => {
+          Twit.find({ author: { $in: loggedUser.following } })
+            .limit(20)
+            .sort("-dateOfCreation")
+            .populate("author")
+            //.populate('likes')
+            .then((feedResults) => {
+              loggedUser.password = "Top-Secret";
+              res.json({ feedResults, loggedUser });
+            });
+        });
     } else {
       res.json({});
     }
   },
 
   discoverFeed: (req, res) => {
-    console.log(req.session);
-
-    let userSession = {
-      _id: "voidUsername",
-      following: [],
-      likes: [],
-    };
-    if (req.isAuthenticated()) {
-      User.findById(req.session.passport.user._id).then((loggedUser) => {
-        Twit.find({ author: { $nin: loggedUser.following } })
-          .limit(20)
-          .sort("-dateOfCreation")
-          .populate("author")
-          //.populate('likes')
-          .then((feedResults) => {
-            res.json({
-              userSession: loggedUser,
-              feedResults,
-            });
+    User.findById(req.user.userId).then((loggedUser) => {
+      Twit.find({ author: { $nin: loggedUser.following } })
+        .limit(20)
+        .sort("-dateOfCreation")
+        //.populate('likes')
+        .then((feedResults) => {
+          res.json({
+            feedResults,
           });
-      });
-    } else {
-      res.json({ userSession });
-    }
+        });
+    });
   },
 
   logInView: (req, res) => {
@@ -115,13 +105,13 @@ module.exports = {
       username: req.body.username,
     }).then((result) => {
       console.log("result", result);
+      console.log("passwordCheck", req.body.password === result.password);
       let user = result;
       bcrypt
         .compare(req.body.password, result.password)
         .then((passwordCheck) => {
-          console.log("passwordCheck", passwordCheck);
           if (passwordCheck) {
-            let token = jwt.sign({ userId: user._id }, process.env.JWTKEY);
+            let token = jwt.sign({ id: user._id }, process.env.JWTKEY);
             console.log("token en back", token);
 
             User.findOneAndUpdate(
@@ -129,12 +119,13 @@ module.exports = {
               { token: token },
               { new: true }
             ).then((response) => {
-              console.log("user", response);
+              console.log("user", response.id);
               let user = {
                 username: response.username,
+                id: response.id,
               };
               console.log("pass deleted", response);
-              res.json({ user, token: response.token });
+              res.json({ token: response.token });
             });
           } else {
             res.json({});
@@ -149,11 +140,12 @@ module.exports = {
       { username: req.body.username, email: req.body.email },
       process.env.JWTKEY
     );
+    let hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const user = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
-      password: bcrypt.hashSync(req.body.password, process.env.SALT),
+      password: hashedPassword,
       email: req.body.email,
       avatar:
         "https://cms.qz.com/wp-content/uploads/2017/03/twitter_egg_blue.png?w=1100&h=619&strip=all&quality=75",
@@ -167,8 +159,6 @@ module.exports = {
     console.log(req.user);
 
     let twit = new Twit(req.body);
-    console.log("twit en el back", twit);
-
     twit.save(function (err, twit) {
       if (err) return res.send(err);
       //console.log("author id", req.body.author);
@@ -187,83 +177,56 @@ module.exports = {
   },
 
   getUserProfile: (req, res) => {
-    //console.log(req.params)
+    console.log("params", req.params);
     let username = req.params.username;
-    let userSession = {
-      _id: "voidUsername",
-      following: [],
-      likes: [],
-    };
 
-    User.findById(userSession._id).then((result) => {
-      if (result != null) {
-        userSession = result;
-      }
-
-      User.findOne({ username })
-        .populate("twits")
-        .then((userProfile) => {
-          res.json({ userProfile, userSession });
-        });
-    });
+    User.findOne({ username })
+      .populate("twits")
+      .then((feedResults) => {
+        res.json(feedResults);
+      });
   },
 
   like: (req, res) => {
-    let newLike = req.body.author;
-    console.log(" new like", newLike);
-
-    Twit.findById(newLike).then((twit) => {
-      console.log(twit);
-
-      if (twit.likes.indexOf(req.session.passport.user._id) != -1) {
-        twit.likes.splice(twit.likes.indexOf(req.session.passport.user._id), 1);
+    Twit.findById(req.body.twitId).then((twit) => {
+      if (twit.likes.indexOf(req.user.userId) != -1) {
+        twit.likes.splice(twit.likes.indexOf(req.user.userId), 1);
         twit.markModified("twit.likes");
         twit.save();
-        res.redirect("/");
+        res.json("Dislike");
       } else {
-        twit.likes.push(req.session.passport.user._id);
+        twit.likes.push(req.user.userId);
         twit.markModified("twit.likes");
         twit.save();
-        res.redirect("/");
+        res.json("Like");
       }
     });
   },
 
   followUnfollow: (req, res) => {
-    //console.log(req.session);
-    let newFollowing = req.body.author;
-
-    User.findById(req.session.passport.user._id, function (err, user) {
-      if (err) return res.send(err);
-
-      if (user.following.indexOf(newFollowing) != -1) {
-        user.following.splice(
-          user.following.indexOf(req.session.passport.user._id),
-          1
-        );
+    User.findById(req.user.userId).then((user) => {
+      if (user.following.indexOf(req.body.author) != -1) {
+        user.following.splice(user.following.indexOf(req.user.userId), 1);
         user.markModified("user.following");
         user.save();
+        User.findById(req.body.author).then((user) => {
+          user.followers.splice(user.followers.indexOf(req.user.userId), 1);
+          user.markModified("user.followers");
+          user.save();
+          res.json("User unfollowed");
+        });
       } else {
-        user.following.push(newFollowing);
+        user.following.push(req.body.author);
         user.markModified("user.following");
         user.save();
+        User.findById(req.body.author).then((user) => {
+          user.followers.push(req.user.userId);
+          user.markModified("user.followers");
+          user.save();
+          res.json("User followed");
+        });
       }
     });
-    User.findById(newFollowing, function (err, user) {
-      if (err) return res.send(err);
-
-      if (user.followers.indexOf(req.session.passport.user._id) != -1) {
-        user.followers.splice(user.followers.indexOf(newFollowing), 1);
-        user.markModified("user.followers");
-        user.save();
-      } else {
-        user.followers.push(req.session.passport.user._id);
-        user.markModified("user.followers");
-        user.save();
-      }
-    });
-
-    res.redirect("/");
   },
 
   logout: function (req, res) {

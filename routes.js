@@ -28,22 +28,15 @@ router.post(
   controllers.createTwit
 );
 
-// Twitealo ruta creat twit
-router.post(
-  "/api/twits/twitealo",
-  controllers.isLoggedIn,
-  controllers.createTwit
-);
-
 //delete twit
-router.get(
-  "/api/twits/eliminar/:id",
-  controllers.isLoggedIn,
-  controllers.deleteTwit
-);
+router.get("/api/twits/eliminar/:id", controllers.deleteTwit);
 
 // LIKES
-router.post("api/twits/like", controllers.isLoggedIn, controllers.like);
+router.post(
+  "/api/twits/like",
+  jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
+  controllers.like
+);
 
 router.get("/api/profile");
 //
@@ -59,18 +52,26 @@ router.get("/logout", controllers.logout);
 router.post("/api/users/register", controllers.signUp);
 router.get("/register", controllers.registerView);
 // discover users route
-router.get("/api/users/discover", controllers.discoverFeed);
-// USER PROFILE
-router.get("api/users/profile/:username", controllers.getUserProfile);
+router.get(
+  "/api/users/discover",
+  jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
+  controllers.discoverFeed
+);
+
 // settings
-router.get("api/users/settings", controllers.userSettings);
+router.get("/api/users/settings", controllers.userSettings);
 // Follow someone
 router.post(
-  "api/users/follow",
-  controllers.isLoggedIn,
+  "/api/users/follow",
+  jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
   controllers.followUnfollow
 );
 
-// sign up routes
+// USER PROFILE
+router.get(
+  "/api/users/:username",
+  jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
+  controllers.getUserProfile
+);
 
 module.exports = router;
