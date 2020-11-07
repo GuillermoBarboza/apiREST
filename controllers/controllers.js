@@ -66,17 +66,14 @@ module.exports = {
   },
 
   discoverFeed: (req, res) => {
-    console.log("req user id", req.user.id);
     User.findById(req.user.id).then((loggedUser) => {
-      console.log("loggeduser", loggedUser);
       Twit.find({ author: { $nin: loggedUser.following } })
         .limit(20)
         .sort("-dateOfCreation")
-        //.populate('likes')
+        .populate("author")
         .then((feedResults) => {
-          res.json({
-            feedResults,
-          });
+          console.log("feedResultsOK");
+          res.json(feedResults);
         });
     });
   },
@@ -126,7 +123,7 @@ module.exports = {
                 avatar: response.avatar,
               };
               console.log("pass deleted", response);
-              res.json({ token: response.token });
+              res.json({ token: response.token, user: user });
             });
           } else {
             res.json({});
@@ -189,41 +186,47 @@ module.exports = {
   },
 
   like: (req, res) => {
-    Twit.findById(req.body.twitId).then((twit) => {
-      if (twit.likes.indexOf(req.user.userId) != -1) {
-        twit.likes.splice(twit.likes.indexOf(req.user.userId), 1);
+    console.log("req user like", req.user);
+    console.log("req body like", req.body);
+    Twit.findById(req.body.id).then((twit) => {
+      if (twit.likes.indexOf(req.user.id) != -1) {
+        twit.likes.splice(twit.likes.indexOf(req.user.id), 1);
         twit.markModified("twit.likes");
         twit.save();
-        res.json("Dislike");
+        res.json("Currently dislike");
       } else {
-        twit.likes.push(req.user.userId);
+        twit.likes.push(req.user.id);
         twit.markModified("twit.likes");
         twit.save();
-        res.json("Like");
+        res.json("currently like");
       }
     });
   },
 
   followUnfollow: (req, res) => {
-    User.findById(req.user.userId).then((user) => {
-      if (user.following.indexOf(req.body.author) != -1) {
-        user.following.splice(user.following.indexOf(req.user.userId), 1);
+    console.log("req user follow", req.user);
+    console.log("req body follow", req.body.author._id);
+    User.findById(req.user.id).then((user) => {
+      if (user.following.indexOf(req.body.author._id) !== -1) {
+        user.following.splice(user.following.indexOf(req.user.id), 1);
         user.markModified("user.following");
         user.save();
-        User.findById(req.body.author).then((user) => {
-          user.followers.splice(user.followers.indexOf(req.user.userId), 1);
+        User.findById(req.body.author._id).then((user) => {
+          user.followers.splice(user.followers.indexOf(req.user.id), 1);
           user.markModified("user.followers");
           user.save();
+          console.log("user unfollowed");
           res.json("User unfollowed");
         });
       } else {
-        user.following.push(req.body.author);
+        user.following.push(req.body.author._id);
         user.markModified("user.following");
         user.save();
-        User.findById(req.body.author).then((user) => {
+        User.findById(req.body.author._id).then((user) => {
           user.followers.push(req.user.userId);
           user.markModified("user.followers");
           user.save();
+          console.log("userfollowed");
           res.json("User followed");
         });
       }

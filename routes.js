@@ -32,8 +32,8 @@ router.post(
 router.get("/api/twits/eliminar/:id", controllers.deleteTwit);
 
 // LIKES
-router.post(
-  "/api/twits/like",
+router.put(
+  "/api/twits/like-dislike",
   jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
   controllers.like
 );
@@ -61,8 +61,8 @@ router.get(
 // settings
 router.get("/api/users/settings", controllers.userSettings);
 // Follow someone
-router.post(
-  "/api/users/follow",
+router.put(
+  "/api/users/follow-unfollow",
   jwtMiddleware({ secret: process.env.JWTKEY, algorithms: ["HS256"] }),
   controllers.followUnfollow
 );
