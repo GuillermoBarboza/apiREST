@@ -45,21 +45,24 @@ module.exports = {
   },
 
   homeFeed: (req, res) => {
-    if (req.user.userId) {
-      User.findById(req.user.userId)
-        .populate("twits")
-        .limit(7)
-        .then((loggedUser) => {
-          Twit.find({ author: { $in: loggedUser.following } })
-            .limit(20)
-            .sort("-dateOfCreation")
-            .populate("author")
-            //.populate('likes')
-            .then((feedResults) => {
-              loggedUser.password = "Top-Secret";
-              res.json({ feedResults, loggedUser });
-            });
-        });
+    if (req.user.id) {
+      User.findById(req.user.id).then((loggedUser) => {
+        Twit.find({ author: { $in: loggedUser.following } })
+          .limit(20)
+          .sort("-dateOfCreation")
+          .populate("author")
+          //.populate('likes')
+          .then((feedResults) => {
+            Twit.find({ author: loggedUser._id })
+              .populate("author")
+              .limit(7)
+              .then((myTwits) => {
+                loggedUser.password = "Top-Secret";
+                let twits = [...feedResults, ...myTwits];
+                res.json(twits);
+              });
+          });
+      });
     } else {
       res.json({});
     }
@@ -67,7 +70,7 @@ module.exports = {
 
   discoverFeed: (req, res) => {
     User.findById(req.user.id).then((loggedUser) => {
-      Twit.find({ author: { $nin: loggedUser.following } })
+      Twit.find({ author: { $nin: loggedUser.following, $ne: loggedUser._id } })
         .limit(20)
         .sort("-dateOfCreation")
         .populate("author")
@@ -102,11 +105,12 @@ module.exports = {
       username: req.body.username,
     }).then((result) => {
       console.log("result", result);
-      console.log("passwordCheck", req.body.password === result.password);
+
       let user = result;
       bcrypt
         .compare(req.body.password, result.password)
         .then((passwordCheck) => {
+          console.log("passwordCheck", req.body.password === result.password);
           if (passwordCheck) {
             let token = jwt.sign({ id: user._id }, process.env.JWTKEY);
             console.log("token en back", token);
@@ -154,15 +158,20 @@ module.exports = {
   },
 
   createTwit: (req, res) => {
-    console.log(req.user);
+    console.log("req body", req.body);
 
-    let twit = new Twit(req.body);
+    let twit = new Twit({
+      author: req.user.id,
+      body: req.body.twit,
+      dateOfCreation: new Date(),
+    });
+    console.log("twit", twit);
     twit.save(function (err, twit) {
       if (err) return res.send(err);
       //console.log("author id", req.body.author);
       //console.log('twit', twit);
 
-      User.findById(req.user.userId, function (err, user) {
+      User.findById(req.user.id, function (err, user) {
         if (err) return res.send(err);
         console.log("user", user);
 
@@ -171,7 +180,7 @@ module.exports = {
       });
     });
 
-    res.json({});
+    res.json("Twit creado");
   },
 
   getUserProfile: (req, res) => {
